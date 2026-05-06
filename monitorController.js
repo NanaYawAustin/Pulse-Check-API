@@ -64,8 +64,15 @@ function heartbeat(req, res) {
     return res.status(400).json({ message: "Monitor is down" });
   }
 
-  clearTimeout(monitor.timer);
-  monitor.status = "active";
+  // Resume if paused
+  if (monitor.status === "paused") {
+    monitor.status = "active";
+  }
+
+  if (monitor.timer) {
+    clearTimeout(monitor.timer);
+  }
+
   monitor.lastHeartbeat = Date.now();
   monitor.timer = setTimeout(() => triggerAlert(id), monitor.timeout * 1000);
 
@@ -83,7 +90,18 @@ function pauseMonitor(req, res) {
     return res.status(404).json({ message: "Monitor not found" });
   }
 
-  clearTimeout(monitor.timer);
+  if (monitor.status === "paused") {
+    return res.status(400).json({ message: "Monitor already paused" });
+  }
+
+  if (monitor.status === "down") {
+    return res.status(400).json({ message: "Cannot pause a down monitor" });
+  }
+
+  if (monitor.timer) {
+    clearTimeout(monitor.timer);
+  }
+
   monitor.status = "paused";
 
   return res.status(200).json({
