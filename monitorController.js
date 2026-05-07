@@ -1,5 +1,11 @@
 const monitors = {};
 
+function getSafeMonitor(monitor) {
+  if (!monitor) return null;
+  const { timer, ...safeMonitor } = monitor;
+  return safeMonitor;
+}
+
 // Trigger alert
 function triggerAlert(id) {
   const monitor = monitors[id];
@@ -16,19 +22,23 @@ function triggerAlert(id) {
 
 // Register Monitor
 function registerMonitor(req, res) {
+  if (!req.body) {
+    return res.status(400).json({ message: "Request body is missing" });
+  }
+
   const { id, timeout, alert_email } = req.body;
 
   // Validate required fields
-  if (!id || timeout === undefined) {
+  if (!id || !timeout) {
     return res.status(400).json({ message: "id and timeout are required" });
   }
 
-  //  Prevent duplicate monitors
+  // Prevent duplicate monitors
   if (monitors[id]) {
     return res.status(400).json({ message: "Monitor already exists" });
   }
 
-  //  Validate timeout type
+  // Validate timeout
   const parsedTimeout = Number(timeout);
 
   if (isNaN(parsedTimeout) || parsedTimeout <= 0) {
@@ -48,10 +58,11 @@ function registerMonitor(req, res) {
 
   return res.status(201).json({
     message: "Monitor registered successfully",
-    monitor,
+    monitor: getSafeMonitor(monitor),
   });
 }
 
+// Heartbeat
 function heartbeat(req, res) {
   const { id } = req.params;
   const monitor = monitors[id];
@@ -78,10 +89,11 @@ function heartbeat(req, res) {
 
   return res.status(200).json({
     message: "Heartbeat received, timer reset",
-    monitor,
+    monitor: getSafeMonitor(monitor),
   });
 }
 
+// Pause monitor
 function pauseMonitor(req, res) {
   const { id } = req.params;
   const monitor = monitors[id];
@@ -106,16 +118,18 @@ function pauseMonitor(req, res) {
 
   return res.status(200).json({
     message: "Monitor paused successfully",
-    monitor,
+    monitor: getSafeMonitor(monitor),
   });
 }
 
+// List all monitors
 function listMonitors(req, res) {
   return res.status(200).json({
-    monitors: Object.values(monitors),
+    monitors: Object.values(monitors).map(getSafeMonitor),
   });
 }
 
+// Get single monitor
 function getMonitor(req, res) {
   const { id } = req.params;
   const monitor = monitors[id];
@@ -124,8 +138,10 @@ function getMonitor(req, res) {
     return res.status(404).json({ message: "Monitor not found" });
   }
 
+  const { timer, ...safeMonitor } = monitor;
+
   return res.status(200).json({
-    monitor,
+    monitor: safeMonitor,
   });
 }
 
