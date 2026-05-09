@@ -45,12 +45,18 @@ function registerMonitor(req, res) {
     return res.status(400).json({ message: "timeout must be a positive number" });
   }
 
+  const now = Date.now();
+  const readableNow = new Date(now).toLocaleString();
+
   const monitor = {
     id,
     timeout: parsedTimeout,
     alert_email,
     status: "active",
-    lastHeartbeat: Date.now(),
+    previousHeartbeatAt: null,
+    previousHeartbeatReadable: null,
+    lastHeartbeatAt: now,
+    lastHeartbeatReadable: readableNow,
     timer: setTimeout(() => triggerAlert(id), parsedTimeout * 1000),
   };
 
@@ -84,7 +90,13 @@ function heartbeat(req, res) {
     clearTimeout(monitor.timer);
   }
 
-  monitor.lastHeartbeat = Date.now();
+  const now = Date.now();
+  const readableNow = new Date(now).toLocaleString();
+
+  monitor.previousHeartbeatAt = monitor.lastHeartbeatAt;
+  monitor.previousHeartbeatReadable = monitor.lastHeartbeatReadable;
+  monitor.lastHeartbeatAt = now;
+  monitor.lastHeartbeatReadable = readableNow;
   monitor.timer = setTimeout(() => triggerAlert(id), monitor.timeout * 1000);
 
   return res.status(200).json({
