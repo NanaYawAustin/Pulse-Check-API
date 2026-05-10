@@ -1,3 +1,10 @@
+## 🧩 System Architecture / Flow Diagram
+
+Below is the flow of how the Pulse-Check-API works:
+
+![Pulse Check Flow Diagram](./assets/architecture-diagram.png)
+
+
 # Pulse-Check-API ("Watchdog" Sentinel)
 This challenge is designed to test your ability to bridge Computer Science fundamentals with Modern Backend Engineering.
 
