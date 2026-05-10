@@ -24,46 +24,23 @@ When a paused monitor receives a heartbeat, it automatically resumes and restart
 This design uses Node.js setTimeout to simulate real-time failure detection.
 
 ## 3. Architecture Diagram
-### System Flow
-Device
-  │
-POST /monitors
-(Register Monitor)
-  │
-Server creates monitor + starts timer
-  │
-ACTIVE STATE
-  │
-  ├────────────── POST /monitors/:id/heartbeat
-  │                     │
-  │               Reset Timer
-  │               Update timestamps
-  │
-  ├────────────── POST /monitors/:id/pause
-  │                     │
-  │                PAUSED STATE
-  │
-Timer expires (no heartbeat)
-  │
-DOWN STATE
-  │
-ALERT (console log)
 
-### State Transition Flow
-REGISTERED -> ACTIVE -> HEARTBEAT -> ACTIVE
-                         │
-                      PAUSED
-                         │
-                       ACTIVE
-                         │
-                      TIMEOUT
-                         │
-                        DOWN -> ALERT
+The system architecture is illustrated in the diagram below:
 
-### System Architecture / Flow Diagram
+![Pulse Check Flow Diagram](./assets/architecture-diagram.png)
 
-Below is the flow of how the Pulse-Check-API works:
-  ![Pulse Check Flow Diagram](./assets/architecture-diagram.png)
+### System Summary
+
+The system follows a state-based monitoring flow:
+
+A device registers a monitor via POST /monitors
+The server starts a countdown timer immediately
+Heartbeats reset the timer and update timestamps
+If no heartbeat is received before timeout, the monitor transitions to DOWN
+A pause state temporarily stops monitoring
+When paused, heartbeat can resume normal monitoring
+
+
 
 ## 4. API Documentation
 
