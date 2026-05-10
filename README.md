@@ -16,8 +16,8 @@ The system is built around an in-memory, timer-based monitoring model.
 - Once registered, a countdown timer begins immediately.
 - Each heartbeat request resets the timer and updates heartbeat timestamps.
 - If the timer expires without receiving a heartbeat:
-- The monitor status changes to DOWN
-- An alert is triggered via console logging
+  - The monitor status changes to DOWN
+  - An alert is triggered via console logging
 - Monitors can be paused to temporarily stop tracking.
 - When a paused monitor receives a heartbeat, it automatically resumes and restarts monitoring.
 
@@ -46,14 +46,16 @@ The system follows a state-based monitoring flow:
 
 ### 1. Register Monitor
 
-Endpoint:
-
+**Endpoint**
+```http
 POST /monitors
+```
 
-Purpose:
+**Purpose**
+
 Create a new device monitor and start a countdown timer.
 
-Request Body:
+**Request Body**
 ```json
 {
   "id": "device-1",
@@ -62,7 +64,7 @@ Request Body:
 }
 ```
 
-Response:
+**Response**
 ```json
 {
   "message": "Monitor registered successfully",
@@ -77,14 +79,16 @@ Response:
 ```
 ### 2. Heartbeat
 
-Endpoint:
-
+**Endpoint**
+```http
 POST /monitors/:id/heartbeat
+```
 
-Purpose:
+**Purpose**
+
 Reset the monitor timer and update heartbeat timestamps.
 
-Response:
+**Response**
 ```json
 {
   "message": "Heartbeat received, timer reset",
@@ -98,14 +102,16 @@ Response:
 ```
 ### 3. Pause Monitor
 
-Endpoint:
-
+**Endpoint**
+```http
 POST /monitors/:id/pause
+```
 
-Purpose:
+**Purpose**
+
 Temporarily stop monitoring a device.
 
-Response:
+**Response**
 ```json
 {
   "message": "Monitor paused successfully",
@@ -117,35 +123,65 @@ Response:
 ```
 ### 4. Get All Monitors
 
-Endpoint:
-
+**Endpoint**
+```http
 GET /monitors
+```
 
-Purpose:
+**Purpose**
+
 Retrieve all registered monitors.
 
-Response:
+**Response**
 ```json
 {
-  "monitors": []
+  "monitors": [
+    {
+      "id": "device-1",
+      "timeout": 60,
+      "alert_email": "test@mail.com",
+      "status": "active",
+      "previousHeartbeatAt": 1778370376615,
+      "previousHeartbeatReadable": "09/05/2026, 11:46:16 pm",
+      "lastHeartbeatAt": 1778370388541,
+      "lastHeartbeatReadable": "09/05/2026, 11:46:28 pm"
+    },
+    {
+      "id": "device-2",
+      "timeout": 120,
+      "alert_email": "admin@mail.com",
+      "status": "paused",
+      "previousHeartbeatAt": 1778370300000,
+      "previousHeartbeatReadable": "09/05/2026, 11:45:00 pm",
+      "lastHeartbeatAt": 1778370325000,
+      "lastHeartbeatReadable": "09/05/2026, 11:45:25 pm"
+    }
+  ]
 }
 ```
 ### 5. Get Single Monitor
 
-Endpoint:
-
+**Endpoint**
+```http
 GET /monitors/:id
+```
 
-Purpose:
+**Purpose**
+
 Retrieve details of a specific monitor.
 
-Response:
+**Response**
 ```json
 {
   "monitor": {
     "id": "device-1",
+    "timeout": 60,
+    "alert_email": "test@mail.com",
     "status": "active",
-    "timeout": 30
+    "previousHeartbeatAt": 1778370376615,
+    "previousHeartbeatReadable": "09/05/2026, 11:46:16 pm",
+    "lastHeartbeatAt": 1778370388541,
+    "lastHeartbeatReadable": "09/05/2026, 11:46:28 pm"
   }
 }
 ```
@@ -176,20 +212,32 @@ This makes it easier to:
 - verify system state during testing
 - monitor device lifecycle progression
 - support debugging and operational visibility
-- Summary
+## Summary
 
-This feature enhances the system by providing a clear, non-intrusive way to inspect monitor states, improving overall transparency and maintainability.
+This enhancement was implemented independently beyond the original project requirements and improves system observability without affecting core functionality.
+
 
 ## 6. Setup Instructions
-- Clone Repository
-- git clone <https://github.com/NanaYawAustin/Pulse-Check-API.git>
-- cd Pulse-Check-API
-- Install Dependencies
-- npm install
-- Start Server
-- npm start
-- Base URL
-- http://localhost:3000
+
+### Clone Repository
+
+```bash
+git clone https://github.com/NanaYawAustin/Pulse-Check-API.git
+cd Pulse-Check-API
+```
+
+### Install Dependencies
+```bash
+npm install
+```
+### Start Server
+```bash
+npm start
+```
+### Base URL
+```text
+http://localhost:3000
+```
 
 ## 7. Final Checklist
 - Repository is public and accessible
