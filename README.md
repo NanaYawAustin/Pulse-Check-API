@@ -138,9 +138,9 @@ GET /monitors/:id
 
 Purpose:
 Retrieve details of a specific monitor.
-```json
-Response:
 
+Response:
+```json
 {
   "monitor": {
     "id": "device-1",
