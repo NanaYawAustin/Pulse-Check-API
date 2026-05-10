@@ -61,9 +61,9 @@ Request Body:
   "alert_email": "test@mail.com"
 }
 ```
-```json
-Response:
 
+Response:
+```json
 {
   "message": "Monitor registered successfully",
   "monitor": {
@@ -123,9 +123,9 @@ GET /monitors
 
 Purpose:
 Retrieve all registered monitors.
-```json
-Response:
 
+Response:
+```json
 {
   "monitors": []
 }
