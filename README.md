@@ -83,8 +83,6 @@ POST /monitors/:id/heartbeat
 Purpose:
 Reset the monitor timer and update heartbeat timestamps.
 
-Response:
-
 {
   "message": "Heartbeat received, timer reset",
   "monitor": {
