@@ -54,13 +54,14 @@ Purpose:
 Create a new device monitor and start a countdown timer.
 
 Request Body:
-
+```json
 {
   "id": "device-1",
   "timeout": 30,
   "alert_email": "test@mail.com"
 }
-
+```
+```json
 Response:
 
 {
@@ -73,7 +74,7 @@ Response:
     "lastHeartbeatAt": 1710000000000
   }
 }
-
+```
 ### 2. Heartbeat
 
 Endpoint:
@@ -83,6 +84,8 @@ POST /monitors/:id/heartbeat
 Purpose:
 Reset the monitor timer and update heartbeat timestamps.
 
+Response:
+```json
 {
   "message": "Heartbeat received, timer reset",
   "monitor": {
@@ -92,7 +95,7 @@ Reset the monitor timer and update heartbeat timestamps.
     "previousHeartbeatAt": 1710000000000
   }
 }
-
+```
 ### 3. Pause Monitor
 
 Endpoint:
@@ -103,7 +106,7 @@ Purpose:
 Temporarily stop monitoring a device.
 
 Response:
-
+```json
 {
   "message": "Monitor paused successfully",
   "monitor": {
@@ -111,7 +114,7 @@ Response:
     "status": "paused"
   }
 }
-
+```
 ### 4. Get All Monitors
 
 Endpoint:
@@ -120,12 +123,13 @@ GET /monitors
 
 Purpose:
 Retrieve all registered monitors.
-
+```json
 Response:
 
 {
   "monitors": []
 }
+```
 ### 5. Get Single Monitor
 
 Endpoint:
@@ -134,7 +138,7 @@ GET /monitors/:id
 
 Purpose:
 Retrieve details of a specific monitor.
-
+```json
 Response:
 
 {
@@ -144,7 +148,7 @@ Response:
     "timeout": 30
   }
 }
-
+```
 ## 5. Developer’s Choice Feature
 Custom Observability Enhancement
 
