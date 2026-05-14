@@ -67,14 +67,17 @@ Create a new device monitor and start a countdown timer.
 **Response**
 ```json
 {
-  "message": "Monitor registered successfully",
-  "monitor": {
-    "id": "device-1",
-    "timeout": 30,
-    "alert_email": "test@mail.com",
-    "status": "active",
-    "lastHeartbeatAt": 1710000000000
-  }
+    "message": "Monitor registered successfully",
+    "monitor": {
+        "id": "device-1",
+        "timeout": 60,
+        "alert_email": "test@mail.com",
+        "status": "active",
+        "previousHeartbeatAt": null,
+        "previousHeartbeatReadable": null,
+        "lastHeartbeatAt": 1778752663692,
+        "lastHeartbeatReadable": "14/05/2026, 9:57:43 am"
+    }
 }
 ```
 ### 2. Heartbeat
@@ -91,13 +94,17 @@ Reset the monitor timer and update heartbeat timestamps.
 **Response**
 ```json
 {
-  "message": "Heartbeat received, timer reset",
-  "monitor": {
-    "id": "device-1",
-    "status": "active",
-    "lastHeartbeatAt": 1710000001000,
-    "previousHeartbeatAt": 1710000000000
-  }
+    "message": "Heartbeat received, timer reset",
+    "monitor": {
+        "id": "device-1",
+        "timeout": 60,
+        "alert_email": "test@mail.com",
+        "status": "active",
+        "previousHeartbeatAt": 1778752488878,
+        "previousHeartbeatReadable": "14/05/2026, 9:54:48 am",
+        "lastHeartbeatAt": 1778752547760,
+        "lastHeartbeatReadable": "14/05/2026, 9:55:47 am"
+    }
 }
 ```
 ### 3. Pause Monitor
